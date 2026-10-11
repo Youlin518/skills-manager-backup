@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "4e6b7c24-a42a-48aa-a53e-ed09a79b6a8b",
+  "path": "project-folder-reorg",
+  "path_key": "project-folder-reorg",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

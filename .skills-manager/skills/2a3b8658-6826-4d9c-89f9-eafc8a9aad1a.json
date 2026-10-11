@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "2a3b8658-6826-4d9c-89f9-eafc8a9aad1a",
+  "path": "kb-archive-ingest",
+  "path_key": "kb-archive-ingest",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

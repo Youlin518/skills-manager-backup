@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>建筑能耗分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --text: #2c3e50;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --primary: #3b82f6;
+    --success: #22c55e;
+    --warning: #eab308;
+    --danger: #ef4444;
+    --electric: #f59e0b;
+    --gas: #8b5cf6;
+    --heat: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 20px;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+    color: white;
+    padding: 32px 40px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; }
+  .header .subtitle { opacity: 0.85; margin-top: 4px; font-size: 14px; }
+
+  /* KPI Cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .kpi-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 4px solid var(--primary);
+  }
+  .kpi-card.success { border-left-color: var(--success); }
+  .kpi-card.warning { border-left-color: var(--warning); }
+  .kpi-card.danger { border-left-color: var(--danger); }
+  .kpi-card .label { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+  .kpi-card .value { font-size: 28px; font-weight: 700; }
+  .kpi-card .unit { font-size: 13px; color: var(--text-secondary); margin-left: 2px; }
+
+  /* Charts */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .chart-grid .wide { grid-column: 1 / -1; }
+  .chart-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .chart-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .chart-card canvas { max-height: 350px; }
+
+  /* Data Table */
+  .table-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+  .table-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 10px 14px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  tr:hover { background: #f8fafc; }
+
+  /* Standard Comparison */
+  .comparison-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+  }
+  .comparison-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .standard-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .standard-row:last-child { border-bottom: none; }
+  .standard-bar {
+    flex: 1;
+    height: 24px;
+    background: #e2e8f0;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .standard-bar .fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.5s ease;
+  }
+  .standard-bar .fill.good { background: var(--success); }
+  .standard-bar .fill.warn { background: var(--warning); }
+  .standard-bar .fill.bad { background: var(--danger); }
+  .standard-label { width: 100px; font-size: 13px; color: var(--text-secondary); }
+
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .chart-grid { grid-template-columns: 1fr; }
+    .header { padding: 24px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media print {
+    body { background: white; padding: 0; }
+    .chart-card, .kpi-card, .table-card, .comparison-card { box-shadow: none; border: 1px solid #e2e8f0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🏢 <span id="report-title">建筑能耗分析报告</span></h1>
+    <div class="subtitle" id="report-subtitle"></div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid" id="kpi-cards"></div>
+
+  <!-- Charts Row 1: Pie + Monthly Stacked Bar -->
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>📊 能源占比分析</h3>
+      <canvas id="pieChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>📈 逐月分项能耗</h3>
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Charts Row 2: Trend Line (wide) -->
+  <div class="chart-grid">
+    <div class="chart-card wide">
+      <h3>📉 能耗与碳排放趋势</h3>
+      <canvas id="trendChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="table-card">
+    <h3>📋 逐月能耗数据明细</h3>
+    <div id="data-table"></div>
+  </div>
+
+  <!-- Standard Comparison -->
+  <div class="comparison-card">
+    <h3>🎯 能耗标准对标</h3>
+    <div id="standard-comparison"></div>
+  </div>
+
+  <div class="footer">
+    报告由建筑能耗分析工具生成 · 数据仅供参考 · 碳排放因子来源：中国生态环境部
+  </div>
+</div>
+
+<!-- Analysis Data (populated by the skill) -->
+<script id="analysis-data" type="application/json">
+{
+  "building_info": {},
+  "energy_proportion": {},
+  "monthly_trend": {},
+  "carbon_emission": {},
+  "standard_comparison": {}
+}
+</script>
+
+<script>
+(function() {
+  const dataEl = document.getElementById('analysis-data');
+  const D = JSON.parse(dataEl.textContent);
+
+  // ========== Populate Header ==========
+  const bi = D.building_info || {};
+  document.getElementById('report-title').textContent =
+    (bi.name || '某建筑') + ' 能耗分析报告';
+  document.getElementById('report-subtitle').textContent =
+    [
+      bi.location || '',
+      bi.type || '',
+      bi.area ? '建筑面积 ' + bi.area + ' m²' : '',
+      bi.year ? '数据年份 ' + bi.year : ''
+    ].filter(Boolean).join(' · ');
+
+  // ========== KPI Cards ==========
+  const kpiGrid = document.getElementById('kpi-cards');
+  const kpis = [];
+
+  // Total standard coal
+  const totalCoal = D.monthly_trend?.total_annual_coal_kgce;
+  if (totalCoal) {
+    kpis.push({
+      label: '年综合能耗（折标煤）', value: (totalCoal / 1000).toFixed(2), unit: 'tce',
+      cls: ''
+    });
+  }
+
+  // Unit area intensity
+  const intensity = D.energy_proportion?.unit_area_intensity || D.unit_area_intensity;
+  if (intensity && !intensity.error) {
+    kpis.push({
+      label: '单位面积能耗', value: intensity.total_coal_per_m2, unit: 'kgce/m²·a',
+      cls: ''
+    });
+  }
+
+  // Total carbon emission
+  const totalCO2 = D.carbon_emission?.total_emission_tons || D.total_emission_tons;
+  if (totalCO2 !== undefined) {
+    kpis.push({
+      label: '年碳排放总量', value: totalCO2.toFixed(2), unit: 'tCO₂',
+      cls: ''
+    });
+  }
+
+  // Carbon intensity
+  const ci = D.carbon_intensity || (D.carbon_emission && D.carbon_emission.area_m2 ?
+    { carbon_intensity_kgco2_per_m2: D.carbon_emission.total_emission_tons * 1000 / D.carbon_emission.area_m2 } : null);
+  if (ci && ci.carbon_intensity_kgco2_per_m2 !== undefined) {
+    kpis.push({
+      label: '碳排放强度', value: ci.carbon_intensity_kgco2_per_m2.toFixed(2), unit: 'kgCO₂/m²·a',
+      cls: ''
+    });
+  }
+
+  // Standard comparison status
+  const sc = D.standard_comparison || {};
+  if (sc.level) {
+    const clsMap = { '优良': 'success', '达标': 'warning', '超标': 'danger' };
+    kpis.push({
+      label: '对标结果', value: sc.icon + ' ' + sc.level, unit: '',
+      cls: clsMap[sc.level] || ''
+    });
+  }
+
+  kpiGrid.innerHTML = kpis.map(k => `
+    <div class="kpi-card ${k.cls}">
+      <div class="label">${k.label}</div>
+      <div class="value">${k.value}<span class="unit">${k.unit}</span></div>
+    </div>
+  `).join('');
+
+  // ========== Color Palette ==========
+  const COLORS = {
+    electricity: '#f59e0b',
+    gas: '#8b5cf6',
+    heat: '#ef4444',
+    total: '#3b82f6',
+    carbon: '#10b981',
+  };
+
+  // ========== Pie Chart ==========
+  const ep = D.energy_proportion || {};
+  const proportions = ep.proportions || [];
+  if (proportions.length > 0) {
+    new Chart(document.getElementById('pieChart'), {
+      type: 'doughnut',
+      data: {
+        labels: proportions.map(p => p.label),
+        datasets: [{
+          data: proportions.map(p => p.proportion_pct),
+          backgroundColor: [COLORS.electricity, COLORS.gas, COLORS.heat],
+          borderWidth: 2,
+          borderColor: '#fff',
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                const p = proportions[ctx.dataIndex];
+                return [
+                  `${p.label}: ${p.proportion_pct}%`,
+                  `折标煤: ${p.coal_equiv_kgce.toLocaleString()} kgce`,
+                  `实物量: ${p.amount.toLocaleString()} ${p.unit}`,
+                ];
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // ========== Monthly Stacked Bar Chart ==========
+  const mt = D.monthly_trend || {};
+  const monthlyData = mt.monthly_data || [];
+  if (monthlyData.length > 0) {
+    new Chart(document.getElementById('barChart'), {
+      type: 'bar',
+      data: {
+        labels: monthlyData.map(m => m.month + '月'),
+        datasets: [
+          {
+            label: '电力',
+            data: monthlyData.map(m => (m.electricity_kwh * 0.1229).toFixed(0)),
+            backgroundColor: COLORS.electricity,
+          },
+          {
+            label: '天然气',
+            data: monthlyData.map(m => (m.gas_m3 * 1.2143).toFixed(0)),
+            backgroundColor: COLORS.gas,
+          },
+          {
+            label: '热力',
+            data: monthlyData.map(m => (m.heat_gj * 34.12).toFixed(0)),
+            backgroundColor: COLORS.heat,
+          },
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: { stacked: true },
+          y: { stacked: true, title: { display: true, text: '能耗 (kgce)' } }
+        },
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  }
+
+  // ========== Trend Line Chart ==========
+  const ce = D.carbon_emission || {};
+  const monthlyEmission = ce.monthly_emission || [];
+  if (monthlyData.length > 0) {
+    const labels = monthlyData.map(m => m.month + '月');
+    new Chart(document.getElementById('trendChart'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: '总能耗 (kgce)',
+            data: monthlyData.map(m => m.total_coal_kgce),
+            borderColor: COLORS.total,
+            backgroundColor: 'rgba(59,130,246,0.1)',
+            fill: true,
+            tension: 0.4,
+            yAxisID: 'y',
+          },
+          {
+            label: '碳排放 (tCO₂)',
+            data: monthlyEmission.length > 0
+              ? monthlyEmission.map(m => m.co2_total)
+              : monthlyData.map(m => m.total_coal_kgce * 0.002),
+            borderColor: COLORS.carbon,
+            borderDash: [6, 3],
+            tension: 0.4,
+            yAxisID: 'y1',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: { display: true, text: '能耗 (kgce)' }
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            title: { display: true, text: '碳排放 (tCO₂)' },
+            grid: { drawOnChartArea: false }
+          }
+        },
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  }
+
+  // ========== Data Table ==========
+  if (monthlyData.length > 0) {
+    const headers = ['月份', '电力 (kWh)', '天然气 (m³)', '热力 (GJ)', '折标煤 (kgce)'];
+    const rows = monthlyData.map(m => [
+      m.month + '月',
+      m.electricity_kwh.toLocaleString(),
+      m.gas_m3.toLocaleString(),
+      m.heat_gj.toLocaleString(),
+      m.total_coal_kgce.toLocaleString(),
+    ]);
+
+    // Totals
+    const totals = [
+      '合计',
+      monthlyData.reduce((s, m) => s + m.electricity_kwh, 0).toLocaleString(),
+      monthlyData.reduce((s, m) => s + m.gas_m3, 0).toLocaleString(),
+      monthlyData.reduce((s, m) => s + m.heat_gj, 0).toLocaleString(),
+      monthlyData.reduce((s, m) => s + m.total_coal_kgce, 0).toLocaleString(),
+    ];
+
+    const tableHTML = `
+      <table>
+        <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+        <tbody>
+          ${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}
+          <tr style="font-weight:600;background:#f8fafc">
+            ${totals.map(c => `<td>${c}</td>`).join('')}
+          </tr>
+        </tbody>
+      </table>
+    `;
+    document.getElementById('data-table').innerHTML = tableHTML;
+  }
+
+  // ========== Standard Comparison ==========
+  if (sc.status === 'matched') {
+    const maxVal = Math.max(sc.actual_value, sc.constraint_value) * 1.2;
+    const actualPct = (sc.actual_value / maxVal * 100).toFixed(1);
+    const constraintPct = (sc.constraint_value / maxVal * 100).toFixed(1);
+    const guidePct = (sc.guide_value / maxVal * 100).toFixed(1);
+    const fillCls = sc.level === '优良' ? 'good' : (sc.level === '达标' ? 'warn' : 'bad');
+
+    document.getElementById('standard-comparison').innerHTML = `
+      <div class="standard-row">
+        <div class="standard-label">实际值</div>
+        <div class="standard-bar"><div class="fill ${fillCls}" style="width:${actualPct}%"></div></div>
+        <span style="font-weight:600">${sc.actual_value} kgce/m²·a</span>
+      </div>
+      <div class="standard-row">
+        <div class="standard-label">约束值</div>
+        <div class="standard-bar"><div class="fill" style="width:${constraintPct}%;background:#94a3b8"></div></div>
+        <span>${sc.constraint_value} kgce/m²·a</span>
+      </div>
+      <div class="standard-row">
+        <div class="standard-label">引导值</div>
+        <div class="standard-bar"><div class="fill" style="width:${guidePct}%;background:#22c55e;opacity:0.5"></div></div>
+        <span>${sc.guide_value} kgce/m²·a</span>
+      </div>
+      <p style="margin-top:16px;padding:12px;background:#f8fafc;border-radius:8px;font-size:14px">
+        <strong>${sc.icon} 对标结论：${sc.level}</strong> — ${sc.message}<br>
+        <span style="color:var(--text-secondary)">标准来源：${sc.standard_source}</span><br>
+        <span style="color:var(--text-secondary)">💡 ${sc.suggestion}</span>
+      </p>
+    `;
+  } else if (sc.message) {
+    document.getElementById('standard-comparison').innerHTML = `
+      <p style="padding:16px;background:#f8fafc;border-radius:8px;color:var(--text-secondary)">
+        ⚪ ${sc.message}
+      </p>
+    `;
+  }
+
+})();
+</script>
+</body>
+</html>

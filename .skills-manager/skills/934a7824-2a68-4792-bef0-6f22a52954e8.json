@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "934a7824-2a68-4792-bef0-6f22a52954e8",
+  "path": "building-energy-analysis",
+  "path_key": "building-energy-analysis",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "energydata-analysis-v1",
+  "name": "能耗分析报告",
+  "version": "1.0.0",
+  "installedAt": 1786375154497,
+  "source": "skillhub",
+  "iconSource": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/a4e49550-e527-4406-b761-c4f2e607b757.png",
+  "iconLocalPath": "C:\\Users\\lenovo\\.workbuddy\\skills\\energydata-analysis-v1__skillhub\\_icon.png",
+  "iconDownloadedFrom": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/a4e49550-e527-4406-b761-c4f2e607b757.png",
+  "installedContentHash": "sha256:2234ea7157f6801dd5053600404167a31ac772290fbfa7234ab05444781a1a36"
+}

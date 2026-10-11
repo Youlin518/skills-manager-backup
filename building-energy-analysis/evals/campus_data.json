@@ -1,0 +1,324 @@
+{
+  "building_info": {
+    "name": "上海中医药大学张江校区",
+    "area": 155500,
+    "type": "学校",
+    "location": "上海",
+    "year": 2024
+  },
+  "energy_proportion": {
+    "energy_totals": {
+      "electricity_kwh": 35970078.0,
+      "gas_m3": 171631.0,
+      "heat_gj": 0
+    },
+    "coal_equiv": {
+      "electricity_kwh": 10719083.243999999,
+      "gas_m3": 208411.5233,
+      "heat_gj": 0.0
+    },
+    "total_coal_kgce": 10927494.77,
+    "proportions": [
+      {
+        "energy_type": "electricity_kwh",
+        "label": "电力",
+        "unit": "kWh",
+        "amount": 35970078.0,
+        "coal_equiv_kgce": 10719083.24,
+        "proportion_pct": 98.1
+      },
+      {
+        "energy_type": "gas_m3",
+        "label": "天然气",
+        "unit": "m³",
+        "amount": 171631.0,
+        "coal_equiv_kgce": 208411.52,
+        "proportion_pct": 1.9
+      },
+      {
+        "energy_type": "heat_gj",
+        "label": "热力",
+        "unit": "GJ",
+        "amount": 0,
+        "coal_equiv_kgce": 0.0,
+        "proportion_pct": 0.0
+      }
+    ]
+  },
+  "monthly_trend": {
+    "monthly_data": [
+      {
+        "month": 1,
+        "electricity_kwh": 3402180.0,
+        "gas_m3": 17771.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 1035428.97
+      },
+      {
+        "month": 2,
+        "electricity_kwh": 2411725.0,
+        "gas_m3": 13214.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 734739.81
+      },
+      {
+        "month": 3,
+        "electricity_kwh": 2913094.0,
+        "gas_m3": 6496.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 875990.1
+      },
+      {
+        "month": 4,
+        "electricity_kwh": 2159325.0,
+        "gas_m3": 18969.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 666512.91
+      },
+      {
+        "month": 5,
+        "electricity_kwh": 2417756.0,
+        "gas_m3": 17444.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 741673.54
+      },
+      {
+        "month": 6,
+        "electricity_kwh": 2948339.0,
+        "gas_m3": 15783.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 897770.32
+      },
+      {
+        "month": 7,
+        "electricity_kwh": 4043817.0,
+        "gas_m3": 14300.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 1222421.96
+      },
+      {
+        "month": 8,
+        "electricity_kwh": 4027505.0,
+        "gas_m3": 8128.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 1210066.32
+      },
+      {
+        "month": 9,
+        "electricity_kwh": 3924629.0,
+        "gas_m3": 7106.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 1178168.26
+      },
+      {
+        "month": 10,
+        "electricity_kwh": 2447077.0,
+        "gas_m3": 16171.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 748865.39
+      },
+      {
+        "month": 11,
+        "electricity_kwh": 2382361.0,
+        "gas_m3": 17775.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 731527.76
+      },
+      {
+        "month": 12,
+        "electricity_kwh": 2892270,
+        "gas_m3": 18474.0,
+        "heat_gj": 0,
+        "total_coal_kgce": 884329.44
+      }
+    ],
+    "peak_month": {
+      "month": 7,
+      "electricity_kwh": 4043817.0,
+      "gas_m3": 14300.0,
+      "heat_gj": 0,
+      "total_coal_kgce": 1222421.96
+    },
+    "valley_month": {
+      "month": 4,
+      "electricity_kwh": 2159325.0,
+      "gas_m3": 18969.0,
+      "heat_gj": 0,
+      "total_coal_kgce": 666512.91
+    },
+    "monthly_avg_coal_kgce": 910624.56,
+    "total_annual_coal_kgce": 10927494.78,
+    "anomalies": [],
+    "seasonal_analysis": {
+      "season_data": {
+        "冬季(12-2月)": {
+          "total_coal_kgce": 2654498.22,
+          "avg_coal_kgce": 884832.74,
+          "pct_of_annual": 24.3
+        },
+        "春季(3-5月)": {
+          "total_coal_kgce": 2284176.55,
+          "avg_coal_kgce": 761392.18,
+          "pct_of_annual": 20.9
+        },
+        "夏季(6-8月)": {
+          "total_coal_kgce": 3330258.6,
+          "avg_coal_kgce": 1110086.2,
+          "pct_of_annual": 30.5
+        },
+        "秋季(9-11月)": {
+          "total_coal_kgce": 2658561.41,
+          "avg_coal_kgce": 886187.14,
+          "pct_of_annual": 24.3
+        }
+      },
+      "dominant_season": "夏季(6-8月)"
+    }
+  },
+  "unit_area_intensity": {
+    "area_m2": 155500,
+    "electricity_per_m2": 231.32,
+    "gas_per_m2": 1.1037,
+    "heat_per_m2": 0.0,
+    "total_coal_per_m2": 70.27
+  },
+  "carbon_emission": {
+    "grid_factor_used": 0.5698,
+    "region": "华东区域",
+    "emission_breakdown": {
+      "electricity": {
+        "amount": 35970078.0,
+        "unit": "kWh",
+        "factor": 0.5698,
+        "factor_unit": "kgCO₂/kWh",
+        "co2_tons": 20495.75,
+        "pct": 98.4
+      },
+      "gas": {
+        "amount": 171631.0,
+        "unit": "m³",
+        "factor": 1.997,
+        "factor_unit": "kgCO₂/m³",
+        "co2_tons": 342.75,
+        "pct": 1.6
+      },
+      "heat": {
+        "amount": 0,
+        "unit": "GJ",
+        "factor": 0.1,
+        "factor_unit": "tCO₂/GJ",
+        "co2_tons": 0.0,
+        "pct": 0.0
+      }
+    },
+    "total_emission_tons": 20838.5,
+    "monthly_emission": [
+      {
+        "month": 1,
+        "co2_elec": 1938.56,
+        "co2_gas": 35.49,
+        "co2_heat": 0.0,
+        "co2_total": 1974.05
+      },
+      {
+        "month": 2,
+        "co2_elec": 1374.2,
+        "co2_gas": 26.39,
+        "co2_heat": 0.0,
+        "co2_total": 1400.59
+      },
+      {
+        "month": 3,
+        "co2_elec": 1659.88,
+        "co2_gas": 12.97,
+        "co2_heat": 0.0,
+        "co2_total": 1672.85
+      },
+      {
+        "month": 4,
+        "co2_elec": 1230.38,
+        "co2_gas": 37.88,
+        "co2_heat": 0.0,
+        "co2_total": 1268.26
+      },
+      {
+        "month": 5,
+        "co2_elec": 1377.64,
+        "co2_gas": 34.84,
+        "co2_heat": 0.0,
+        "co2_total": 1412.47
+      },
+      {
+        "month": 6,
+        "co2_elec": 1679.96,
+        "co2_gas": 31.52,
+        "co2_heat": 0.0,
+        "co2_total": 1711.48
+      },
+      {
+        "month": 7,
+        "co2_elec": 2304.17,
+        "co2_gas": 28.56,
+        "co2_heat": 0.0,
+        "co2_total": 2332.72
+      },
+      {
+        "month": 8,
+        "co2_elec": 2294.87,
+        "co2_gas": 16.23,
+        "co2_heat": 0.0,
+        "co2_total": 2311.1
+      },
+      {
+        "month": 9,
+        "co2_elec": 2236.25,
+        "co2_gas": 14.19,
+        "co2_heat": 0.0,
+        "co2_total": 2250.44
+      },
+      {
+        "month": 10,
+        "co2_elec": 1394.34,
+        "co2_gas": 32.29,
+        "co2_heat": 0.0,
+        "co2_total": 1426.64
+      },
+      {
+        "month": 11,
+        "co2_elec": 1357.47,
+        "co2_gas": 35.5,
+        "co2_heat": 0.0,
+        "co2_total": 1392.97
+      },
+      {
+        "month": 12,
+        "co2_elec": 1648.02,
+        "co2_gas": 36.89,
+        "co2_heat": 0.0,
+        "co2_total": 1684.91
+      }
+    ]
+  },
+  "carbon_intensity_kgco2_per_m2": 134.01,
+  "total_coal_kgce": 10927494.77,
+  "coal_per_m2_kgce": 70.27,
+  "standard_comparison": {
+    "status": "matched",
+    "standard_source": "国家标准 (GB/T 51161-2016)",
+    "building_type": "学校",
+    "level": "超标",
+    "icon": "🔴",
+    "energy_actual": 70.27,
+    "energy_constraint": 35,
+    "energy_guide": 25,
+    "energy_unit": "kgce/m²·a",
+    "energy_message": "实际 70.27 > 约束值 35 kgce/m²·a，超出 35.27，需要整改",
+    "message": "🔴 超标 — 实际 70.27 > 约束值 35 kgce/m²·a，超出 35.27，需要整改",
+    "suggestion": ""
+  },
+  "data_notes": [
+    "燃气数据仅含学生食堂，不含校区其他燃气使用。",
+    "12月用电量为估算值（取11月与1月均值），原始数据仅含1-11月。",
+    "校区内动物楼、创新中心等高能耗科研设施拉高了单位面积能耗指标。"
+  ]
+}
